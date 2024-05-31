@@ -1,30 +1,42 @@
 import json
 
+
 class Libreria:
     def __init__(self):
         self.libros = []
 
     def anadir_libro(self, titulo, autor, genero, anio):
-        self.libros.append({'titulo': titulo, 'autor': autor, 'genero': genero, 'anio': anio})
+        """Añade un libro a la librería."""
+        self.libros.append({
+            'titulo': titulo,
+            'autor': autor,
+            'genero': genero,
+            'anio': anio
+        })
         return "Libro añadido"
 
     def buscar_libro(self, titulo):
+        """Busca un libro por su título."""
         return [libro for libro in self.libros if libro['titulo'].lower() == titulo.lower()]
 
     def buscar_por_autor(self, autor):
+        """Busca libros por autor."""
         return [libro for libro in self.libros if autor.lower() in libro['autor'].lower()]
 
     def eliminar_libro(self, titulo):
+        """Elimina un libro por su título."""
         original_count = len(self.libros)
         self.libros = [libro for libro in self.libros if libro['titulo'].lower() != titulo.lower()]
         return "Libro eliminado" if len(self.libros) < original_count else "Libro no encontrado"
 
     def guardar_libros(self, archivo):
+        """Guarda la lista de libros en un archivo JSON."""
         with open(archivo, 'w') as f:
-            json.dump(self.libros, f)
+            json.dump(self.libros, f, ensure_ascii=False, indent=4)
         return "Libros guardados"
 
     def cargar_libros(self, archivo):
+        """Carga la lista de libros desde un archivo JSON."""
         try:
             with open(archivo, 'r') as f:
                 self.libros = json.load(f)
@@ -33,6 +45,7 @@ class Libreria:
             return "Archivo no encontrado"
 
 
+# Ejemplo de uso de la clase Libreria
 mi_libreria = Libreria()
 mi_libreria.anadir_libro("Cien años de soledad", "Gabriel García Márquez", "Novela", 1967)
 mi_libreria.guardar_libros('libreria.json')
